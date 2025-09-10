@@ -70,7 +70,8 @@ O projeto EcoLink possui uma série de questões chave que precisam ser analisad
 
 ## 📌 Planejamento
 
-O planejamento do projeto pode ser acompanhado pelo **Trello**, onde as tarefas estão organizadas em etapas, incluindo o desenvolvimento, testes e integração contínua.
+O planejamento do projeto pode ser acompanhado pelo **[trello](https://trello.com/b/IYqji8Ii/meu-quadro-do-trello)**, onde as tarefas estão organizadas em etapas, incluindo o desenvolvimento, testes e integração contínua.
+
 
 ---
 
