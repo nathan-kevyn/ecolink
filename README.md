@@ -77,15 +77,6 @@ O planejamento do projeto pode ser acompanhado pelo **[trello](https://trello.co
 
 ---
 
-## 📝 Informações Importantes do Projeto
-
-* **Dataset**: Conjunto de dados que alimenta o sistema EcoLink.
-* **Modelo Físico**: <a id="modelo-fisico-do-banco-de-dados"></a>Estrutura do banco de dados, conforme ilustrado na imagem abaixo (o modelo físico contém informações detalhadas sobre as tabelas, relacionamentos e índices).
-* **Plano de Análise**: Estratégias de análise para otimizar o uso e os processos de reciclagem.
-* **Consultas DQL**: Definir consultas SQL para análise de dados.
-
----
-
 <a id="membros-do-grupo"></a>
 ## 👥 Membros do Grupo
 
