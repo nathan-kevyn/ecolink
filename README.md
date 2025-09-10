@@ -3,15 +3,16 @@
 ## 📚 Índice
 
 1. [Objetivo](#objetivo)
-2. [Plano de Análise](#plano-de-análise)
-3. [Próximas Etapas](#próximas-etapas)
+2. [Plano de Análise](#plano-de-analise)
+3. [Próximas Etapas](#proximas-etapas)
 4. [Estrutura do Banco de Dados](#estrutura-do-banco-de-dados)
 5. [Scripts SQL](#scripts-sql)
 6. [Membros do Grupo](#membros-do-grupo)
-7. [Modelo Físico do Banco de Dados](#modelo-físico-do-banco-de-dados)
+7. [Modelo Físico do Banco de Dados](#modelo-fisico-do-banco-de-dados)
 
 ---
 
+<a id="objetivo"></a>
 ## ♻️ Objetivo
 
 O **EcoLink** é um projeto destinado a otimizar o processo de reciclagem, conectando **usuários**, **empresas** e **pontos de coleta**. O principal objetivo do sistema é permitir o gerenciamento eficiente de resíduos recicláveis e facilitar o agendamento de coletas.
@@ -25,6 +26,7 @@ Este projeto busca:
 
 ---
 
+<a id="plano-de-analise"></a>
 ## ❓ Plano de Análise
 
 O projeto EcoLink possui uma série de questões chave que precisam ser analisadas para otimizar o sistema e promover melhores práticas de reciclagem. As análises propostas incluem:
@@ -51,6 +53,7 @@ O projeto EcoLink possui uma série de questões chave que precisam ser analisad
 
 ---
 
+<a id="proximas-etapas"></a>
 ## 📆 Próximas Etapas
 
 1. **Desenvolvimento do Processo de ETL em T-SQL**:
@@ -72,18 +75,18 @@ O projeto EcoLink possui uma série de questões chave que precisam ser analisad
 
 O planejamento do projeto pode ser acompanhado pelo **[trello](https://trello.com/b/IYqji8Ii/meu-quadro-do-trello)**, onde as tarefas estão organizadas em etapas, incluindo o desenvolvimento, testes e integração contínua.
 
-
 ---
 
 ## 📝 Informações Importantes do Projeto
 
 * **Dataset**: Conjunto de dados que alimenta o sistema EcoLink.
-* **Modelo Físico**: Estrutura do banco de dados, conforme ilustrado na imagem abaixo (o modelo físico contém informações detalhadas sobre as tabelas, relacionamentos e índices).
+* **Modelo Físico**: <a id="modelo-fisico-do-banco-de-dados"></a>Estrutura do banco de dados, conforme ilustrado na imagem abaixo (o modelo físico contém informações detalhadas sobre as tabelas, relacionamentos e índices).
 * **Plano de Análise**: Estratégias de análise para otimizar o uso e os processos de reciclagem.
 * **Consultas DQL**: Definir consultas SQL para análise de dados.
 
 ---
 
+<a id="membros-do-grupo"></a>
 ## 👥 Membros do Grupo
 
 * João Pedro Lima Gaspar
@@ -94,6 +97,7 @@ O planejamento do projeto pode ser acompanhado pelo **[trello](https://trello.co
 
 ---
 
+<a id="estrutura-do-banco-de-dados"></a>
 ## 🏗️ Estrutura do Banco de Dados
 
 O banco de dados foi projetado para suportar todas as operações necessárias para o funcionamento do sistema EcoLink. Ele contém tabelas relacionadas a **usuários**, **empresas**, **pontos de coleta**, **agendamentos**, **tipos de resíduos** e outros elementos-chave. A seguir estão as principais tabelas e seus campos:
@@ -106,22 +110,22 @@ O banco de dados foi projetado para suportar todas as operações necessárias p
 * **idade**: Idade do usuário (opcional).
 * **telefone**: Número de telefone do usuário (opcional).
 * **cpf**: CPF do usuário (único).
-* **senha\_hash**: Senha criptografada para autenticação.
+* **senha_hash**: Senha criptografada para autenticação.
 * **cep**: Código postal do endereço do usuário.
 * **logradouro, numero, complemento, bairro, cidade, estado**: Endereço completo do usuário.
-* **data\_cadastro**: Data e hora do cadastro do usuário.
+* **data_cadastro**: Data e hora do cadastro do usuário.
 
 ### 2. **Empresa**
 
 * **id**: Identificador único da empresa.
 * **cnpj**: CNPJ da empresa (único).
-* **senha\_hash**: Senha criptografada para autenticação.
+* **senha_hash**: Senha criptografada para autenticação.
 * **tipo**: Tipo de empresa (Corporativa ou Comerciante).
-* **razao\_social**: Razão social da empresa.
-* **nome\_fantasia**: Nome fantasia da empresa.
+* **razao_social**: Razão social da empresa.
+* **nome_fantasia**: Nome fantasia da empresa.
 * **telefone**: Número de telefone da empresa.
 * **cep, logradouro, numero, complemento, bairro, cidade, estado**: Endereço completo da empresa.
-* **data\_cadastro**: Data e hora do cadastro da empresa.
+* **data_cadastro**: Data e hora do cadastro da empresa.
 
 ### 3. **Ponto de Coleta**
 
@@ -129,26 +133,27 @@ O banco de dados foi projetado para suportar todas as operações necessárias p
 * **nome**: Nome do ponto de coleta.
 * **endereco**: Endereço completo do ponto de coleta.
 * **cep, cidade, estado**: Localização do ponto de coleta.
-* **horario\_funcionamento**: Horário de funcionamento do ponto.
+* **horario_funcionamento**: Horário de funcionamento do ponto.
 * **responsavel**: Responsável pelo ponto de coleta.
 * **nota**: Nota de avaliação do ponto de coleta (0 a 10).
 * **latitude, longitude**: Coordenadas geográficas do ponto de coleta.
 * **ativo**: Status do ponto de coleta (ativo ou inativo).
-* **data\_cadastro**: Data e hora do cadastro do ponto de coleta.
+* **data_cadastro**: Data e hora do cadastro do ponto de coleta.
 
 ### 4. **Agendamento**
 
 * **id**: Identificador único do agendamento.
-* **usuario\_id**: Identificador do usuário que fez o agendamento.
-* **empresa\_id**: Identificador da empresa que participa do agendamento (se aplicável).
-* **ponto\_coleta\_id**: Identificador do ponto de coleta escolhido.
-* **data\_hora**: Data e hora do agendamento.
+* **usuario_id**: Identificador do usuário que fez o agendamento.
+* **empresa_id**: Identificador da empresa que participa do agendamento (se aplicável).
+* **ponto_coleta_id**: Identificador do ponto de coleta escolhido.
+* **data_hora**: Data e hora do agendamento.
 * **status**: Status do agendamento (Agendado, Concluído, Cancelado, etc.).
 * **observacoes**: Observações adicionais sobre o agendamento.
-* **data\_criacao**: Data e hora de criação do agendamento.
+* **data_criacao**: Data e hora de criação do agendamento.
 
 ---
 
+<a id="scripts-sql"></a>
 ## 🖥️ Scripts SQL
 
 O banco de dados é alimentado com as seguintes tabelas principais, e os scripts SQL abaixo definem as estruturas das tabelas e os índices:
@@ -178,5 +183,3 @@ CREATE INDEX idx_usuario_email ON Usuario(email);
 CREATE INDEX idx_usuario_cpf ON Usuario(cpf);
 
 -- Outras tabelas seguem a mesma lógica de criação, como Empresa, PontoColeta, Agendamento, etc.
-```
-
