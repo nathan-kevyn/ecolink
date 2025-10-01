@@ -1,7 +1,7 @@
 
 -- Script de Inserção de Dados - HistoricoReciclagem
 -- Projeto EcoLink
--- Dados fictícios para 2020 e 2021
+-- Dados de 2020 e 2021
 DECLARE @unidade_ton_id INT = (SELECT id FROM UnidadeMedida WHERE sigla = 'TON');
 
 -- Inserções de 2020-01
