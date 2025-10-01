@@ -1,4 +1,4 @@
--- Script de Inserção de Agendamentos Fictícios
+
 INSERT INTO Agendamento (id, usuario_id, empresa_id, ponto_coleta_id, data_agendada, status) VALUES
 (1, 10, 6, 9, '2020-01-03', 'REALIZADO'),
 (2, 1, 1, 6, '2020-01-05', 'REALIZADO'),
