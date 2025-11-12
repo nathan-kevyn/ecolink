@@ -206,5 +206,5 @@ O modelo estrela do **Brasileirão Analytics** conta com:
 
 O dicionário completo das tabelas fato foi documentado em formato HTML interativo, com detalhamento técnico completo.  
 
-📄 **Arquivo:** [`Dicionario de dados site.html`](sandbox:/mnt/data/Dicionario%20de%20dados%20site.html)  
+📄 **Arquivo:** [`Dicionario de dados site.html`](https://github.com/nathan-kevyn/Brasileirao-Analytics-Sistema-de-Dados-do-Campeonato-Brasileiro-2004-2024-/blob/main/raw/main/arquivos/site.html)  
 🔍 **Conteúdo:** estrutura das tabelas `Fato_Partida`, `Fato_Estatistica_Clube`, `Fato_Gol` e `Fato_Cartao`, incluindo **tipos de dados, chaves primárias e estrangeiras, índices e descrições**.  
