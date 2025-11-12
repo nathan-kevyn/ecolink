@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dicionário de Dados - Tabelas Fato</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .schema-overview {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .schema-overview h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .table-section {
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .table-header {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 20px;
+            border-bottom: 3px solid #2980b9;
+        }
+        
+        .table-header h2 {
+            font-size: 1.8em;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+        
+        .table-description {
+            font-style: italic;
+            opacity: 0.9;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0;
+        }
+        
+        .data-table th {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 500;
+            border-right: 1px solid #2c3e50;
+        }
+        
+        .data-table th:last-child {
+            border-right: none;
+        }
+        
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: top;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .data-table tr:hover {
+            background: #e8f4fc;
+            transition: background 0.3s ease;
+        }
+        
+        .foreign-keys {
+            background: #fff3cd;
+            padding: 20px;
+            border-left: 5px solid #ffc107;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
+        
+        .foreign-keys h4 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .key-primary {
+            background: #d4edda;
+            color: #155724;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        
+        .key-foreign {
+            background: #cce7ff;
+            color: #004085;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        
+        .indexes {
+            background: #e2e3e5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-family: monospace;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .data-table {
+                font-size: 0.9em;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Dicionário de Dados</h1>
+            <p>Esquema Estrela - Sistema de Análise de Futebol</p>
+        </div>
+        
+        <div class="content">
+            <div class="schema-overview">
+                <h3>🎯 Visão Geral do Esquema</h3>
+                <p>Este documento descreve as tabelas fato do data warehouse de futebol, seguindo a modelagem dimensional em esquema estrela. As tabelas fato contêm as métricas e eventos mensuráveis do sistema.</p>
+            </div>
+            
+            <!-- Tabela Fato_Partida -->
+            <div class="table-section">
+                <div class="table-header">
+                    <h2>⚽ Fato_Partida</h2>
+                    <p class="table-description">Armazena os dados principais das partidas de futebol</p>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo</th>
+                            <th>Tamanho</th>
+                            <th>Obrigatório</th>
+                            <th>Chave</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>partida_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-primary">Primária</span></td>
+                            <td>Identificador único da partida</td>
+                        </tr>
+                        <tr>
+                            <td>rodada</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Número da rodada do campeonato</td>
+                        </tr>
+                        <tr>
+                            <td>data_partida</td>
+                            <td>DATE</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>Data em que a partida foi realizada</td>
+                        </tr>
+                        <tr>
+                            <td>dia_semana</td>
+                            <td>NVARCHAR</td>
+                            <td>20</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Dia da semana da partida</td>
+                        </tr>
+                        <tr>
+                            <td>mandante_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID do clube mandante</td>
+                        </tr>
+                        <tr>
+                            <td>visitante_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID do clube visitante</td>
+                        </tr>
+                        <tr>
+                            <td>tecnico_mandante_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID do técnico do time mandante</td>
+                        </tr>
+                        <tr>
+                            <td>tecnico_visitante_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID do técnico do time visitante</td>
+                        </tr>
+                        <tr>
+                            <td>vencedor_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Não</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID do clube vencedor (NULL se empate)</td>
+                        </tr>
+                        <tr>
+                            <td>arena_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID da arena onde a partida foi realizada</td>
+                        </tr>
+                        <tr>
+                            <td>mandante_placar</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Número de gols do time mandante</td>
+                        </tr>
+                        <tr>
+                            <td>visitante_placar</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Número de gols do time visitante</td>
+                        </tr>
+                        <tr>
+                            <td>mandante_estado</td>
+                            <td>NVARCHAR</td>
+                            <td>50</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Estado do clube mandante</td>
+                        </tr>
+                        <tr>
+                            <td>visitante_estado</td>
+                            <td>NVARCHAR</td>
+                            <td>50</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Estado do clube visitante</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="foreign-keys">
+                    <h4>🔗 Chaves Estrangeiras:</h4>
+                    <ul>
+                        <li>FK_Partida_Mandante → Dim_Clube(clube_id)</li>
+                        <li>FK_Partida_Visitante → Dim_Clube(clube_id)</li>
+                        <li>FK_Partida_Vencedor → Dim_Clube(clube_id)</li>
+                        <li>FK_Partida_TecMand → Dim_Tecnico(tecnico_id)</li>
+                        <li>FK_Partida_TecVis → Dim_Tecnico(tecnico_id)</li>
+                        <li>FK_Partida_Arena → Dim_Arena(arena_id)</li>
+                        <li>FK_Partida_Tempo → Dim_Tempo(data_partida)</li>
+                    </ul>
+                </div>
+                
+                <div class="indexes">
+                    <strong>Índices:</strong><br>
+                    CREATE INDEX IX_Fato_Partida_Data ON futebol.Fato_Partida(data_partida);
+                </div>
+            </div>
+            
+            <!-- Tabela Fato_Estatistica_Clube -->
+            <div class="table-section">
+                <div class="table-header">
+                    <h2>📈 Fato_Estatistica_Clube</h2>
+                    <p class="table-description">Armazena estatísticas dos clubes por partida</p>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo</th>
+                            <th>Tamanho</th>
+                            <th>Obrigatório</th>
+                            <th>Chave</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>estatistica_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-primary">Primária</span></td>
+                            <td>ID único (auto incremento)</td>
+                        </tr>
+                        <tr>
+                            <td>partida_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID da partida relacionada</td>
+                        </tr>
+                        <tr>
+                            <td>clube_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID do clube</td>
+                        </tr>
+                        <tr>
+                            <td>chutes</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Total de chutes realizados</td>
+                        </tr>
+                        <tr>
+                            <td>chutes_a_gol</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Chutes direcionados ao gol</td>
+                        </tr>
+                        <tr>
+                            <td>posse_de_bola</td>
+                            <td>DECIMAL</td>
+                            <td>5,2</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Percentual de posse de bola (%)</td>
+                        </tr>
+                        <tr>
+                            <td>passes</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Número total de passes</td>
+                        </tr>
+                        <tr>
+                            <td>precisao_passes</td>
+                            <td>DECIMAL</td>
+                            <td>5,2</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Percentual de passes certos (%)</td>
+                        </tr>
+                        <tr>
+                            <td>faltas</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Número de faltas cometidas</td>
+                        </tr>
+                        <tr>
+                            <td>cartoes_amarelos</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Cartões amarelos recebidos</td>
+                        </tr>
+                        <tr>
+                            <td>cartoes_vermelhos</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Cartões vermelhos recebidos</td>
+                        </tr>
+                        <tr>
+                            <td>impedimentos</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Número de impedimentos</td>
+                        </tr>
+                        <tr>
+                            <td>escanteios</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Escanteios a favor</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="foreign-keys">
+                    <h4>🔗 Chaves Estrangeiras:</h4>
+                    <ul>
+                        <li>FK_Estatistica_Partida → Fato_Partida(partida_id)</li>
+                        <li>FK_Estatistica_Clube → Dim_Clube(clube_id)</li>
+                    </ul>
+                </div>
+                
+                <div class="indexes">
+                    <strong>Índices:</strong><br>
+                    CREATE INDEX IX_Fato_Estatistica_Partida ON futebol.Fato_Estatistica_Clube(partida_id);
+                </div>
+            </div>
+            
+            <!-- Tabela Fato_Gol -->
+            <div class="table-section">
+                <div class="table-header">
+                    <h2>🥅 Fato_Gol</h2>
+                    <p class="table-description">Registra todos os gols marcados nas partidas</p>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo</th>
+                            <th>Tamanho</th>
+                            <th>Obrigatório</th>
+                            <th>Chave</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>gol_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-primary">Primária</span></td>
+                            <td>ID único (auto incremento)</td>
+                        </tr>
+                        <tr>
+                            <td>partida_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID da partida</td>
+                        </tr>
+                        <tr>
+                            <td>clube_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID do clube que marcou o gol</td>
+                        </tr>
+                        <tr>
+                            <td>atleta_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Não</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID do atleta que marcou o gol</td>
+                        </tr>
+                        <tr>
+                            <td>minuto</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td>-</td>
+                            <td>Minuto em que o gol foi marcado</td>
+                        </tr>
+                        <tr>
+                            <td>tipo_gol</td>
+                            <td>NVARCHAR</td>
+                            <td>50</td>
+                            <td>Não</td>
+                            <td>-</td>
+                            <td>Tipo do gol (ex: normal, penalidade, etc.)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="foreign-keys">
+                    <h4>🔗 Chaves Estrangeiras:</h4>
+                    <ul>
+                        <li>FK_Gol_Partida → Fato_Partida(partida_id)</li>
+                        <li>FK_Gol_Clube → Dim_Clube(clube_id)</li>
+                        <li>FK_Gol_Atleta → Dim_Atleta(atleta_id)</li>
+                    </ul>
+                </div>
+                
+                <div class="indexes">
+                    <strong>Índices:</strong><br>
+                    CREATE INDEX IX_Fato_Gol_Minuto ON futebol.Fato_Gol(minuto);
+                </div>
+            </div>
+            
+            <!-- Tabela Fato_Cartao -->
+            <div class="table-section">
+                <div class="table-header">
+                    <h2>🟨 Fato_Cartao</h2>
+                    <p class="table-description">Registra todos os cartões aplicados nas partidas</p>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Tipo</th>
+                            <th>Tamanho</th>
+                            <th>Obrigatório</th>
+                            <th>Chave</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>cartao_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-primary">Primária</span></td>
+                            <td>ID único (auto incremento)</td>
+                        </tr>
+                        <tr>
+                            <td>partida_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Sim</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID da partida</td>
+                        </tr>
+                        <tr>
+                            <td>clube_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Não</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID do clube do atleta</td>
+                        </tr>
+                        <tr>
+                            <td>atleta_id</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Não</td>
+                            <td><span class="key-foreign">Estrangeira</span></td>
+                            <td>ID do atleta que recebeu o cartão</td>
+                        </tr>
+                        <tr>
+                            <td>tipo_cartao</td>
+                            <td>NVARCHAR</td>
+                            <td>20</td>
+                            <td>Não</td>
+                            <td>-</td>
+                            <td>Tipo do cartão (Amarelo/Vermelho)</td>
+                        </tr>
+                        <tr>
+                            <td>minuto</td>
+                            <td>INT</td>
+                            <td>-</td>
+                            <td>Não</td>
+                            <td>-</td>
+                            <td>Minuto em que o cartão foi aplicado</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="foreign-keys">
+                    <h4>🔗 Chaves Estrangeiras:</h4>
+                    <ul>
+                        <li>partida_id → Fato_Partida(partida_id)</li>
+                        <li>clube_id → Dim_Clube(clube_id)</li>
+                        <li>atleta_id → Dim_Atleta(atleta_id)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Dicionário de Dados - Sistema de Análise de Futebol | Esquema Estrela</p>
+            <p>📅 Gerado em: <span id="current-date"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Adiciona a data atual no footer
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('pt-BR');
+        
+        // Adiciona efeito de hover nas linhas da tabela
+        document.querySelectorAll('.data-table tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transition = 'background-color 0.3s ease';
+            });
+        });
+    </script>
+</body>
+</html>
