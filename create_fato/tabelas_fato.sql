@@ -2,7 +2,6 @@ CREATE TABLE futebol.Fato_Partida (
     partida_id INT PRIMARY KEY,
     rodada INT,
     data_partida DATE,
-    dia_semana NVARCHAR(20),
     mandante_id INT,
     visitante_id INT,
     tecnico_mandante_id INT,
@@ -67,3 +66,4 @@ CREATE TABLE futebol.Fato_Cartao (
 CREATE INDEX IX_Fato_Partida_Data ON futebol.Fato_Partida(data_partida);
 CREATE INDEX IX_Fato_Estatistica_Partida ON futebol.Fato_Estatistica_Clube(partida_id);
 CREATE INDEX IX_Fato_Gol_Minuto ON futebol.Fato_Gol(minuto);
+
