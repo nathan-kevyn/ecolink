@@ -208,4 +208,4 @@ O dicionário completo das tabelas fato foi documentado em formato HTML interati
 
 Para o acompanhamento e gerenciamento das atividades e do progresso do projeto, utilizamos o Trello. Você pode acessar o quadro completo através do link abaixo:
 
-🔗 **Quadro Trello:** [BrasileirãoDB](https://trello.com/b/IYqji8Ii/brasileiraodb){target="_blank"}
+🔗 **Quadro Trello:** [BrasileirãoDB](https://trello.com/b/IYqji8Ii/brasileiraodb)
