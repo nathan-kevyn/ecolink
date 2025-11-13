@@ -202,3 +202,10 @@ O dicionário completo das tabelas fato foi documentado em formato HTML interati
 
 🔍 **Conteúdo:** estrutura das tabelas `Fato_Partida`, `Fato_Estatistica_Clube`, `Fato_Gol` e `Fato_Cartao`, incluindo **tipos de dados, chaves primárias e estrangeiras, índices e descrições**.  
 
+---
+
+## 📋 **Gerenciamento do Projeto**
+
+Para o acompanhamento e gerenciamento das atividades e do progresso do projeto, utilizamos o Trello. Você pode acessar o quadro completo através do link abaixo:
+
+🔗 **Quadro Trello:** [BrasileirãoDB](https://trello.com/b/IYqji8Ii/brasileiraodb){target="_blank"}
