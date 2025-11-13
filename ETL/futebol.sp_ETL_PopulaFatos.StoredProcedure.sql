@@ -1,145 +1,93 @@
-CREATE OR ALTER PROCEDURE futebol.sp_ETL_PopulaFatos
+
+ALTER   PROCEDURE [futebol].[sp_ETL_PopulaFatos]
 AS
 BEGIN
     SET NOCOUNT ON;
     PRINT '🚀 Iniciando ETL das tabelas FATO...';
 
-    ------------------------------------------------------------
-    -- 1️⃣ Limpeza prévia das Fatos (ordem correta de FK)
-    ------------------------------------------------------------
-    PRINT '🧹 Limpando tabelas de Fato antes da carga...';
-    DELETE FROM futebol.Fato_Gol;
-    DELETE FROM futebol.Fato_Estatistica_Clube;
-    DELETE FROM futebol.Fato_Partida;
-    DELETE FROM futebol.Fato_Cartao;
-    ------------------------------------------------------------
-    -- 2️⃣ Fato_Partida
-    ------------------------------------------------------------
-    PRINT '🚀 Iniciando ETL das Fatos...';
-
-    -- ✅ Fato_Partida (UPSERT)
+    ---------------------------------------------------
+    -- 1. FATO_PARTIDA
+    ---------------------------------------------------
     MERGE futebol.Fato_Partida AS destino
     USING (
-    SELECT 
-        p.partida_id,
-        MIN(p.rodada) AS rodada,
-        MIN(cm.clube_id) AS mandante_id,
-        MIN(cv.clube_id) AS visitante_id,
-        MIN(cw.clube_id) AS vencedor_id,
-        MIN(a.arena_id) AS arena_id,
-        MIN(tm.tecnico_id) AS tecnico_mandante_id,
-        MIN(tv.tecnico_id) AS tecnico_visitante_id,
-        MIN(t.id_tempo) AS id_tempo,
-        MIN(p.mandante_placar) AS mandante_placar,
-        MIN(p.visitante_placar) AS visitante_placar
-    FROM futebol.partidas_raw p
-    LEFT JOIN futebol.Dim_Clube cm 
-        ON UPPER(REPLACE(REPLACE(REPLACE(cm.nome,'-',' '),'.',''),',','')) =
-           UPPER(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(p.mandante)),'-',' '),'.',''),',',''))
-    LEFT JOIN futebol.Dim_Clube cv 
-        ON UPPER(REPLACE(REPLACE(REPLACE(cv.nome,'-',' '),'.',''),',','')) =
-           UPPER(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(p.visitante)),'-',' '),'.',''),',',''))
-    LEFT JOIN futebol.Dim_Clube cw 
-        ON UPPER(REPLACE(REPLACE(REPLACE(cw.nome,'-',' '),'.',''),',','')) =
-           UPPER(REPLACE(REPLACE(REPLACE(LTRIM(RTRIM(p.vencedor)),'-',' '),'.',''),',',''))
-    LEFT JOIN futebol.Dim_Tecnico tm 
-        ON tm.nome = p.tecnico_mandante
-    LEFT JOIN futebol.Dim_Tecnico tv 
-        ON tv.nome = p.tecnico_visitante
-    LEFT JOIN futebol.Dim_Arena a 
-        ON a.nome = p.arena
-    LEFT JOIN futebol.Dim_Tempo t 
-        ON t.data_partida = TRY_CAST(p.data_partida AS DATE)
-    GROUP BY p.partida_id
-) AS origem
-
+        SELECT DISTINCT
+            p.partida_id,
+            p.rodada,
+            cm.clube_id AS mandante_id,
+            cv.clube_id AS visitante_id,
+            tm.tecnico_id AS tecnico_mandante_id,
+            tv.tecnico_id AS tecnico_visitante_id,
+            cw.clube_id AS vencedor_id,
+            a.arena_id,
+            t.tempo_id,
+            p.mandante_placar,
+            p.visitante_placar
+        FROM futebol.partidas_raw p
+        LEFT JOIN futebol.Dim_Clube cm ON cm.nome = LTRIM(RTRIM(p.mandante))
+        LEFT JOIN futebol.Dim_Clube cv ON cv.nome = LTRIM(RTRIM(p.visitante))
+        LEFT JOIN futebol.Dim_Tecnico tm ON tm.nome = LTRIM(RTRIM(p.tecnico_mandante))
+        LEFT JOIN futebol.Dim_Tecnico tv ON tv.nome = LTRIM(RTRIM(p.tecnico_visitante))
+        LEFT JOIN futebol.Dim_Clube cw ON cw.nome = LTRIM(RTRIM(p.vencedor))
+        LEFT JOIN futebol.Dim_Arena a ON a.nome = LTRIM(RTRIM(p.arena))
+        LEFT JOIN futebol.Dim_Tempo t ON t.data_partida = TRY_CAST(p.data_partida AS DATE)
+    ) AS origem
     ON destino.partida_id = origem.partida_id
-
-    WHEN MATCHED THEN 
-        UPDATE SET 
-            destino.mandante_id = origem.mandante_id,
-            destino.visitante_id = origem.visitante_id,
-            destino.vencedor_id = origem.vencedor_id,
-            destino.arena_id = origem.arena_id,
-            destino.tecnico_mandante_id = origem.tecnico_mandante_id,
-            destino.tecnico_visitante_id = origem.tecnico_visitante_id,
-            destino.id_tempo = origem.id_tempo,
-            destino.mandante_placar = origem.mandante_placar,
-            destino.visitante_placar = origem.visitante_placar
-
     WHEN NOT MATCHED THEN
-        INSERT (partida_id, rodada, mandante_id, visitante_id, vencedor_id, arena_id,
-                tecnico_mandante_id, tecnico_visitante_id, id_tempo, mandante_placar, visitante_placar)
-        VALUES (origem.partida_id, origem.rodada, origem.mandante_id, origem.visitante_id, origem.vencedor_id,
-                origem.arena_id, origem.tecnico_mandante_id, origem.tecnico_visitante_id, origem.id_tempo,
-                origem.mandante_placar, origem.visitante_placar);
+        INSERT (partida_id, rodada, mandante_id, visitante_id, tecnico_mandante_id, tecnico_visitante_id, vencedor_id, arena_id, tempo_id, mandante_placar, visitante_placar)
+        VALUES (origem.partida_id, origem.rodada, origem.mandante_id, origem.visitante_id, origem.tecnico_mandante_id, origem.tecnico_visitante_id, origem.vencedor_id, origem.arena_id, origem.tempo_id, origem.mandante_placar, origem.visitante_placar);
 
-    PRINT '✅ Fato_Partida atualizada/inserida (UPSERT).';
+    PRINT '✅ Fato_Partida populada.';
 
+    ---------------------------------------------------
+    -- 2. FATO_ESTATISTICA_CLUBE
+    ---------------------------------------------------
+    MERGE futebol.Fato_Estatistica_Clube AS destino
+    USING (
+        SELECT DISTINCT
+            e.partida_id,
+            c.clube_id,
+            TRY_CAST(e.chutes_a_gol AS INT) AS chutes_a_gol,
+            TRY_CAST(REPLACE(e.posse_de_bola, '%', '') AS DECIMAL(5,2)) AS posse_de_bola
+        FROM futebol.estatisticas_raw e
+        LEFT JOIN futebol.Dim_Clube c ON c.nome = LTRIM(RTRIM(e.clube))
+        WHERE e.partida_id IS NOT NULL
+    ) AS origem
+    ON destino.partida_id = origem.partida_id AND destino.clube_id = origem.clube_id
+    WHEN NOT MATCHED THEN
+        INSERT (partida_id, clube_id, chutes_a_gol, posse_de_bola)
+        VALUES (origem.partida_id, origem.clube_id, origem.chutes_a_gol, origem.posse_de_bola);
 
-    ------------------------------------------------------------
-    -- 3️⃣ Fato_Estatistica_Clube
-    ------------------------------------------------------------
-INSERT INTO futebol.Fato_Estatistica_Clube (
-    partida_id, clube_id, chutes, chutes_a_gol, posse_de_bola,
-    passes, precisao_passes, faltas, cartao_amarelo, cartao_vermelho,
-    impedimentos, escanteios
-)
-SELECT 
-    e.partida_id,
-    c.clube_id,
-    TRY_CAST(e.chutes AS INT),
-    TRY_CAST(e.chutes_a_gol AS INT),
-    TRY_CAST(REPLACE(e.posse_de_bola, '%', '') AS DECIMAL(5,2)),
-    TRY_CAST(e.passes AS INT),
-    TRY_CAST(REPLACE(e.precisao_passes, '%', '') AS DECIMAL(5,2)),
-    TRY_CAST(e.faltas AS INT),
-    TRY_CAST(e.cartao_amarelo AS INT),
-    TRY_CAST(e.cartao_vermelho AS INT),
-    TRY_CAST(e.impedimentos AS INT),
-    TRY_CAST(e.escanteios AS INT)
-FROM futebol.estatisticas_raw e
-LEFT JOIN futebol.Dim_Clube c ON c.nome = LTRIM(RTRIM(e.clube))
-WHERE e.partida_id IS NOT NULL
-  AND c.clube_id IS NOT NULL  -- Garante que clube_id não seja NULL
-  AND NOT EXISTS (
-        SELECT 1 
-        FROM futebol.Fato_Estatistica_Clube fe 
-        WHERE fe.partida_id = e.partida_id AND fe.clube_id = c.clube_id
-  );
+    PRINT '✅ Fato_Estatistica_Clube populada.';
 
-    ------------------------------------------------------------
-    -- 4️⃣ Fato_Gol
-    ------------------------------------------------------------
-    PRINT '⚽ Populando Fato_Gol...';
-
-    INSERT INTO futebol.Fato_Gol (
-    partida_id, rodada, clube_id, atleta_id, minuto
-)
-SELECT 
-    g.partida_id,
-    g.rodada,
-    c.clube_id,
-    a.atleta_id,
-    CASE 
-        WHEN CHARINDEX('+', g.minuto) > 0 THEN 
-            TRY_CAST(SUBSTRING(g.minuto, 1, CHARINDEX('+', g.minuto) - 1) AS INT)  -- Pega a parte antes do '+'
-        ELSE 
-            TRY_CAST(g.minuto AS INT)  -- Se não tiver '+', converte normalmente
-    END AS minuto
-FROM futebol.gols_raw g
-INNER JOIN futebol.Dim_Clube c ON c.nome = LTRIM(RTRIM(g.clube))
-LEFT JOIN futebol.Dim_Atleta a ON a.nome = LTRIM(RTRIM(g.atleta))
-WHERE g.partida_id IN (SELECT partida_id FROM futebol.Fato_Partida);
+    ---------------------------------------------------
+    -- 3. FATO_GOL
+    ---------------------------------------------------
+    MERGE futebol.Fato_Gol AS destino
+    USING (
+        SELECT DISTINCT
+            g.partida_id,
+            c.clube_id,
+            a.atleta_id,
+            g.minuto,
+            g.tipo_gol
+        FROM futebol.gols_raw g
+        LEFT JOIN futebol.Dim_Clube c ON c.nome = LTRIM(RTRIM(g.clube))
+        LEFT JOIN futebol.Dim_Atleta a ON a.nome = LTRIM(RTRIM(g.atleta))
+        WHERE g.partida_id IS NOT NULL
+    ) AS origem
+    ON destino.partida_id = origem.partida_id
+       AND destino.clube_id = origem.clube_id
+       AND destino.atleta_id = origem.atleta_id
+       AND destino.minuto = origem.minuto
+    WHEN NOT MATCHED THEN
+        INSERT (partida_id, clube_id, atleta_id, minuto, tipo_gol)
+        VALUES (origem.partida_id, origem.clube_id, origem.atleta_id, origem.minuto, origem.tipo_gol);
 
     PRINT '✅ Fato_Gol populada.';
-
-     ------------------------------------------------------------
-    -- 50 Fato_Cartão
-    ------------------------------------------------------------
-
-
-    INSERT INTO futebol.Fato_Cartao (partida_id, clube_id, atleta_id, tipo_cartao, minuto)
+    ---------------------------------------------------
+    -- 4. FATO_CARTÃO
+    ---------------------------------------------------
+        INSERT INTO futebol.Fato_Cartao (partida_id, clube_id, atleta_id, tipo_cartao, minuto)
 SELECT 
     c.partida_id,
     dc.clube_id,
@@ -161,7 +109,3 @@ PRINT '✅ Fato_Cartao populada.';
     ------------------------------------------------------------
     PRINT '🎯 ETL das Fatos concluído com sucesso!';
 END;
-GO
-
-
-EXEC futebol.sp_ETL_PopulaFatos
