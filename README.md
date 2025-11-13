@@ -60,27 +60,23 @@ O projeto propõe um conjunto de **análises esportivas complexas e contextuais*
    Quais clubes marcaram mais gols **nos últimos 15 minutos das partidas (após os 85')**?  
    ➤ *Objetivo:* Identificar equipes que mais decidem jogos nos acréscimos e mantêm intensidade até o fim.
 
-2. **Jogadores Mais “Quentes”:**  
-   Quais são os **10 jogadores que receberam mais cartões (amarelos e/ou vermelhos)** em partidas realizadas **a partir de 2003**, nos **minutos finais (85’ em diante)**?  
+2. **O "Parking the bus"”:**  
+   Quais são as **10 Arenas com mais empates** em partidas realizadas **a partir de 2003**
    ➤ *Objetivo:* Analisar comportamento emocional e disciplina em momentos de pressão.
 
-3. **Evolução do Número de Gols:**  
-   Como a **média de gols por partida** evoluiu ao longo das temporadas?  
-   ➤ *Objetivo:* Detectar tendências ofensivas e avaliar se o “espetáculo do gol” tem aumentado ou diminuído ao longo dos anos.
-
-4. **Aproveitamento de Mandante vs. Visitante:**  
+3. **Aproveitamento de Mandante vs. Visitante:**  
    Qual é a diferença de **pontos por jogo** entre times atuando em casa e fora, por temporada?  
    ➤ *Objetivo:* Mensurar o peso do mando de campo e sua variação histórica.
 
-5. **Jogadores de Virada:**  
+4. **Jogadores de Virada:**  
    Quais jogadores **mais marcaram gols que resultaram em empates ou viradas**?  
    ➤ *Objetivo:* Identificar atletas decisivos e sua contribuição direta para resultados positivos.
 
-6. **Tendências Táticas:**  
+5. **Tendências Táticas:**  
    Houve evolução na **posse de bola média, número de passes ou precisão** por partida entre 2004 e 2024?  
    ➤ *Objetivo:* Estudar como o futebol brasileiro se modernizou tecnicamente.
 
-7. **Clubes com Maior Disciplina e Indisciplina:**  
+6. **Clubes com Maior Disciplina e Indisciplina:**  
    Quais equipes apresentam o **maior e o menor número médio de cartões por partida**?  
    ➤ *Objetivo:* Avaliar padrões de comportamento e estilo de jogo (mais físico ou técnico).
 
