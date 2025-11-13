@@ -1,0 +1,36 @@
+BULK INSERT futebol.partidas_raw
+FROM 'C:\campeonato-brasileiro-full-clean.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n',
+    CODEPAGE = '65001'
+);
+
+BULK INSERT futebol.cartoes_raw
+FROM 'C:\campeonato-brasileiro-cartoes-clean.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n',
+    CODEPAGE = '65001'
+);
+
+
+BULK INSERT futebol.gols_raw
+FROM 'C:\campeonato-brasileiro-gols-clean.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n',
+    CODEPAGE = '65001'
+);
+
+BULK INSERT futebol.estatisticas_raw
+FROM 'C:\campeonato-brasileiro-estatisticas-clean.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n',
+    CODEPAGE = '65001'
+);

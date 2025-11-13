@@ -201,3 +201,4 @@ O dicionário completo das tabelas fato foi documentado em formato HTML interati
 📄 **Arquivo:** [Dicionário de dados site.html](https://github.com/nathan-kevyn/Brasileirao-Analytics-Sistema-de-Dados-do-Campeonato-Brasileiro-2004-2024-/blob/main/site.html)
 
 🔍 **Conteúdo:** estrutura das tabelas `Fato_Partida`, `Fato_Estatistica_Clube`, `Fato_Gol` e `Fato_Cartao`, incluindo **tipos de dados, chaves primárias e estrangeiras, índices e descrições**.  
+
