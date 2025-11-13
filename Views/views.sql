@@ -201,7 +201,6 @@ WITH EstatisticasJogadores AS (
 SELECT 
     atleta,
     clube,
-    total_gols,
     gols_empate,
     gols_virada,
     gols_abertura,
@@ -355,4 +354,5 @@ WHERE
              ELSE pp.mandante_posse
          END;
 GO
+
 
