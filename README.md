@@ -56,27 +56,27 @@ O projeto propõe um conjunto de **análises esportivas complexas e contextuais*
 
 ### 🧩 **Consultas e perguntas analíticas sugeridas**
 
-Clubes Decisivos no Fechamento:
+1. Clubes Decisivos no Fechamento: 
 Quais clubes marcaram mais gols nos últimos 15 minutos das partidas (após os 85')?
 ➤ Objetivo: Identificar equipes que mais decidem jogos nos acréscimos e mantêm intensidade até o fim.
 
-Fator Casa:
+2. Fator Casa:
 Quais são as 10 Arenas com mais empates em partidas realizadas a partir de 2003?
 ➤ Objetivo: Identificar estádios onde o fator "campo" é menos decisivo, potencialmente indicando ambientes mais equilibrados ou que inibem as equipes visitantes.
 
-Jogadores de Virada:
+3. Jogadores de Virada:
 Quais jogadores mais marcaram gols que resultaram em empates ou viradas?
 ➤ Objetivo: Identificar atletas decisivos e sua contribuição direta para resultados positivos em momentos de pressão.
 
-Tendências Táticas:
+4. Tendências Táticas:
 Como evoluiu a posse de bola média, número de passes e sua precisão por clubes ao longo dos anos?
 ➤ Objetivo: Estudar como o futebol brasileiro se modernizou tecnicamente e mapear a adoção de estilos de jogo baseados em controle.
 
-Disciplina ou Indisciplina:
+5. Disciplina ou Indisciplina:
 Quais são os jogadores que mais recebem cartões nos últimos 15 minutos das partidas?
 ➤ Objetivo: Analisar o comportamento emocional e a disciplina dos atletas em momentos de alta pressão e desgaste físico.
 
-Clubes com Maior Disciplina e Indisciplina:
+6.Clubes com Maior Disciplina e Indisciplina: 
 Quais equipes apresentam o maior e o menor número de cartões por partida?
 ➤ Objetivo: Avaliar padrões de comportamento coletivo e estilo de jogo (mais físico ou técnico) dos clubes.
    
