@@ -60,7 +60,7 @@ O projeto propõe um conjunto de **análises esportivas complexas e contextuais*
    Quais clubes marcaram mais gols **nos últimos 15 minutos das partidas (após os 85')**?  
    ➤ *Objetivo:* Identificar equipes que mais decidem jogos nos acréscimos e mantêm intensidade até o fim.
 
-2. **O "Parking the bus"”:**  
+2. **Parking the bus:**  
    Quais são as **10 Arenas com mais empates** em partidas realizadas **a partir de 2003**
    ➤ *Objetivo:* Analisar comportamento emocional e disciplina em momentos de pressão.
 
